@@ -1,8 +1,9 @@
-murmurhash = require('murmurhash');
+const murmurhash = require('murmurhash');
 
 let bloomArray;
 const arraySize = 200;
 const numOfHash = 3;
+let valuesCount = 0;
 
 function init() {
     console.log('init bloom filter');
@@ -17,6 +18,8 @@ function add(value) {
         console.log(`adding "${value}", iteration ${index}. result: ${result}`);
         bloomArray[result] = true;
     }
+
+    console.log(`"${value}" added. total values count is ${++valuesCount}`);
 }
 
 
