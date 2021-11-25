@@ -5,11 +5,18 @@ const arraySize = 200;
 const numOfHash = 3;
 let valuesCount = 0;
 
-function init() {
+function _init() {
     console.log('init bloom filter');
     bloomArray = new Array(arraySize).fill(false);
 }
 
+function _getFalsePositiveRate() {
+    const n = valuesCount;
+    const m = arraySize;
+    const k = numOfHash;
+    const rate = Math.pow(1 - Math.exp(-k / (m / n)), k);
+    return (Math.round(((rate * 100) + Number.EPSILON) * 100) / 100);
+}
 
 
 function add(value) {
@@ -19,7 +26,7 @@ function add(value) {
         bloomArray[result] = true;
     }
 
-    console.log(`"${value}" added. total values count is ${++valuesCount}`);
+    console.log(`"${value}" added. total values count is ${++valuesCount}. current false positive rate: ${_getFalsePositiveRate()}`);
 }
 
 
@@ -33,11 +40,11 @@ function isExist(value) {
         }
     }
 
-    console.log(`"${value}" probably exist`);
+    console.log(`"${value}" probably exist. current false positive rate: ${_getFalsePositiveRate()}`);
     return true;
 }
 
-init();
+_init();
 
 module.exports = {
     add: add,
